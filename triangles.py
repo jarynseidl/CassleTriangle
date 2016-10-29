@@ -2,15 +2,12 @@ import sys
 import Tkinter as tk
 import ValidatingEntry as ve
 
-print "Hello World"
 
 class Application(tk.Frame):
     def __init__(self, master = None):
         tk.Frame.__init__(self, master)
         self.grid()
         self.createWidgets()
-        # while True:
-        #     self.grid()
 
     def createWidgets(self):
         self.sideALabel = tk.Label(self, text = "Side A length")
@@ -40,7 +37,7 @@ class Application(tk.Frame):
         self.quitButton = tk.Button(self, text = "Quit", command = self.quit)
         self.quitButton.grid(row = 5, column = 1, pady = 5)
 
-    def calculate(self):
+    def classify(self):
         aLength = int(self.aLengthEntry.get())
         bLength = int(self.bLengthEntry.get())
         cLength = int(self.cLengthEntry.get())
@@ -60,11 +57,13 @@ class Application(tk.Frame):
         elif self.right(shorterSides, maxLength):
             self.outputLabel['text'] = "This is a valid Right Triangle."
         else:
-            self.outputLabel['text'] = "Regular Triangle."
+            self.outputLabel['text'] = "This is a valid Regular Triangle."
 
+    # If all 3 sides are of equal length
     def equilateral(self, sides):
         return self.equilateral_r(sides[0], sides[1:])
 
+    # Recursive equilateral helper function
     def equilateral_r(self, side, sides):
         if len(sides) == 0:
             return True
@@ -73,9 +72,11 @@ class Application(tk.Frame):
         else:
             return False
 
+    # 2 sides are of equal length
     def isosceles(self, sides):
         return self.isosceles_r(sides[0], sides[1:])
 
+    # Recursive isosceles helper function
     def isosceles_r(self, side, sides):
         if len(sides) == 0:
             return False
@@ -84,15 +85,17 @@ class Application(tk.Frame):
         else:
             return self.isosceles_r(sides[0], sides[1:])
 
+    # a^2 + b^2 = c^2, where C is the hypotenuse
     def right(self, shorterSides, maxLength):
         return reduce((lambda x,y: x+y), map((lambda x: x*x), shorterSides)) == (maxLength * maxLength)
 
+    # Calls classify if all the inputs are provided.
     def focusOut(self, event):
         if self.aLengthEntry.get() != "" and self.bLengthEntry.get() != '' and self.cLengthEntry.get() != "":
-            self.calculate()
+            self.classify()
         else:
             self.outputLabel['text'] = "Waiting for input"
 
 app = Application()
-app.master.title("First application")
+app.master.title("Triangle application")
 app.mainloop()
