@@ -48,6 +48,7 @@ class Application(tk.Frame):
         while len(shorterSides) < 2:
             shorterSides.append(maxLength)
 
+        # Classify the triangle
         if sum(shorterSides) < maxLength:
             self.outputLabel['text'] = "Invalid triangle.  \nPlease make sure that \nthe two shorter sides add together \nto be larger than the longest side."
         elif self.equilateral(sides):
